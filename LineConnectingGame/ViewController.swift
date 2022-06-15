@@ -141,29 +141,28 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         drawView.delegate = self
         segmentedControl.selectedSegmentIndex = 0
-        
-        imageViews.forEach { imageView in
-            drawView.imageViews.append(imageView)
-        }
+        drawView.configure(
+            labels: labels,
+            leftLabels: leftLabels,
+            rightLabels: rightLabels,
+            imageViews: imageViews,
+            leftImageViews: leftImageViews,
+            rightImageViews: rightImageViews,
+            randomValue: randomValue,
+            dictonaryImageAndValue: dictonaryImageAndValue,
+            dictonaryImageAndLabel: dictonaryImageAndLabel
+        )
 
         leftImageViews.forEach { imageView in
-            drawView.leftImageViews.append(imageView)
-        }
-
-        rightImageViews.forEach { imageView in
-            drawView.rightImageViews.append(imageView)
-        }
-
-        leftImageViews.forEach { imageView in
-            imageView.layer.borderColor = UIColor.tintColor.cgColor
-            //線の太さ(太さ)
-            imageView.layer.borderWidth = 1
+//            imageView.layer.borderColor = UIColor.tintColor.cgColor
+//            //線の太さ(太さ)
+//            imageView.layer.borderWidth = 1
         }
         rightImageViews.forEach { imageView in
 
-            imageView.layer.borderColor = UIColor.black.cgColor
-            //線の太さ(太さ)
-            imageView.layer.borderWidth = 1
+//            imageView.layer.borderColor = UIColor.black.cgColor
+//            //線の太さ(太さ)
+//            imageView.layer.borderWidth = 1
         }
 
     }
@@ -205,15 +204,45 @@ class DrawView: UIView {
         case nothingIsSelected
     }
     var delegate: ProtocolDrawView!
-    var currentDrawing: Drawing?
-    var finishedDrawings: [Drawing] = []
-    var currentColor = UIColor.black
-    var imageViews: [UIImageView] = []
-    var leftImageViews: [UIImageView] = []
-    var rightImageViews: [UIImageView] = []
+    private var currentDrawing: Drawing?
+    private var finishedDrawings: [Drawing] = []
+    private var currentColor = UIColor.black
+    private var labels: [UILabel] = []
+    private var leftLabels: [UILabel] = []
+    private var rightLabels: [UILabel] = []
+    private var imageViews: [UIImageView] = []
+    private var leftImageViews: [UIImageView] = []
+    private var rightImageViews: [UIImageView] = []
+    private var randomValue :[String] = []
+    private var dictonaryImageAndValue: [UIImageView: String] = [:]
+    private var dictonaryImageAndLabel: [UIImageView: UILabel] = [:]
+
+
     var setOfTwoImages:(first: UIImageView?, second: UIImageView?)
     var selectedImages:[UIImageView] = []
     var imageSelectionStatus: ImageSelectionStatus = .nothingIsSelected
+
+    func configure(
+        labels: [UILabel],
+        leftLabels: [UILabel] ,
+        rightLabels: [UILabel],
+        imageViews: [UIImageView],
+        leftImageViews: [UIImageView],
+        rightImageViews: [UIImageView],
+        randomValue :[String],
+        dictonaryImageAndValue: [UIImageView: String] ,
+        dictonaryImageAndLabel: [UIImageView: UILabel]
+    ) {
+        self.labels = labels
+        self.leftLabels = leftLabels
+        self.rightLabels = rightLabels
+        self.imageViews = imageViews
+        self.leftImageViews = leftImageViews
+        self.rightImageViews = rightImageViews
+        self.randomValue = randomValue
+        self.dictonaryImageAndValue = dictonaryImageAndValue
+        self.dictonaryImageAndLabel = dictonaryImageAndLabel
+    }
 
     override func draw(_ rect: CGRect) {
         for drawing in finishedDrawings {
@@ -229,22 +258,11 @@ class DrawView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
-        let location2 = touch.preciseLocation(in: self)
-        print(location2)
-        let location3 = touch.previousLocation(in: self)
-        print(location3)
         let location = touch.location(in: self)
-
-
-        print(location)
         imageViews.forEach { imageView in
 
             let convertFrame = imageView.convert(imageView.bounds, to: self)
-            print("最小X:\(convertFrame.minX),最大X:\(convertFrame.maxX),最小Y:\(convertFrame.minY),最大Y:\(convertFrame.maxY)")
-            if convertFrame.minX <= location.x
-                && convertFrame.maxX >= location.x
-                && convertFrame.minY <= location.y
-                && convertFrame.maxY >= location.y {
+            if isPressedPositionInTheImageArea(convertFrame: convertFrame, touchedLocation: location) {
                 if selectedImages.contains(imageView) {
                     // TODO: アラート表示する。
                     delegate.selectedSelectionAlert()
@@ -275,7 +293,6 @@ class DrawView: UIView {
             } else {
             }
         }
-        print("-----------------------")
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -295,10 +312,7 @@ class DrawView: UIView {
             leftImageViews.forEach { imageView in
 
                 let convertFrame = imageView.convert(imageView.bounds, to: self)
-                if convertFrame.minX <= location.x
-                    && convertFrame.maxX >= location.x
-                    && convertFrame.minY <= location.y
-                    && convertFrame.maxY >= location.y {
+                if isPressedPositionInTheImageArea(convertFrame: convertFrame, touchedLocation: location) {
                     if selectedImages.contains(imageView) {
                         // TODO: アラート表示する。
                         delegate.selectedSelectionAlert()
@@ -315,10 +329,7 @@ class DrawView: UIView {
         case .leftImage:
             rightImageViews.forEach { imageView in
                 let convertFrame = imageView.convert(imageView.bounds, to: self)
-                if convertFrame.minX <= location.x
-                    && convertFrame.maxX >= location.x
-                    && convertFrame.minY <= location.y
-                    && convertFrame.maxY >= location.y {
+                if isPressedPositionInTheImageArea(convertFrame: convertFrame, touchedLocation: location) {
                     if selectedImages.contains(imageView) {
                         // TODO: アラート表示する。
                         delegate.selectedSelectionAlert()
@@ -375,6 +386,13 @@ class DrawView: UIView {
         path.addLine(to: end)
         path.close()
         path.stroke()
+    }
+
+    func isPressedPositionInTheImageArea(convertFrame: CGRect,touchedLocation: CGPoint ) -> Bool{
+        return convertFrame.minX <= touchedLocation.x
+            && convertFrame.maxX >= touchedLocation.x
+            && convertFrame.minY <= touchedLocation.y
+            && convertFrame.maxY >= touchedLocation.y
     }
 }
 
