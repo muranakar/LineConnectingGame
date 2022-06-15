@@ -17,6 +17,14 @@ extension UIAlertController {
         controller.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         return controller
     }
+    /// 測定結果。
+    static func result(numberOfCorrectAnswers: Int) -> Self {
+        let title = "結果"
+        let message = "\(numberOfCorrectAnswers)個正解しました！"
+        let controller = self.init(title: title, message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        return controller
+    }
 
     static func configureLocationSetting(okHandler:@escaping () -> Void) -> Self {
         let title = "現在地の取得不可"

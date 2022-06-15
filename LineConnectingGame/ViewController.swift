@@ -67,8 +67,30 @@ class ViewController: UIViewController {
         ]
     }
 
-    private var imageViews: [UIImageView] {
-        [
+    private var imageViews: [UIImageView] = []
+
+
+    private var leftImageViews: [UIImageView] = []
+
+    private var rightImageViews: [UIImageView] = []
+
+    var randomValue :[String] = ["1","2","3","4","5"]
+    var leftShuffledRandomValue: [String] = []
+    var rightShuffledRandomValue: [String] = []
+    var dictonaryImageAndValue: [UIImageView: String] = [:]
+    //選択したレイヤーをいれておく
+    private var selectLayer:CALayer!
+    //最後にタッチされた座標をいれておく
+    private var touchLastPoint:CGPoint!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        drawView.delegate = self
+        segmentedControl.selectedSegmentIndex = 0
+
+        leftShuffledRandomValue = randomValue.shuffled()
+        rightShuffledRandomValue = randomValue.shuffled()
+        imageViews = [
             leftFirstImageView,
             leftSecondImageView,
             leftThirdImageView,
@@ -80,67 +102,44 @@ class ViewController: UIViewController {
             rightFourthImageView,
             rightFifthImageView
         ]
-    }
-
-    private var leftImageViews: [UIImageView] {
-        return [
+        leftImageViews = [
             leftFirstImageView,
             leftSecondImageView,
             leftThirdImageView,
             leftFourthImageView,
             leftFifthImageView
         ]
-    }
-
-    private var rightImageViews: [UIImageView] {
-        return [
+        rightImageViews = [
             rightFirstImageView,
             rightSecondImageView,
             rightThirdImageView,
             rightFourthImageView,
             rightFifthImageView
         ]
-    }
-
-    var randomValue :[String] = ["1","2","3","4","5"]
-    var dictonaryImageAndValue: [UIImageView: String] {
-        return [
-            leftImageViews[0]: randomValue[0],
-            leftImageViews[1]: randomValue[1],
-            leftImageViews[2]: randomValue[2],
-            leftImageViews[3]: randomValue[3],
-            leftImageViews[4]: randomValue[4],
-            rightImageViews[0]: randomValue[0],
-            rightImageViews[1]: randomValue[1],
-            rightImageViews[2]: randomValue[2],
-            rightImageViews[3]: randomValue[3],
-            rightImageViews[4]: randomValue[4]
+        dictonaryImageAndValue = [
+            leftImageViews[0]: leftShuffledRandomValue[0],
+            leftImageViews[1]: leftShuffledRandomValue[1],
+            leftImageViews[2]: leftShuffledRandomValue[2],
+            leftImageViews[3]: leftShuffledRandomValue[3],
+            leftImageViews[4]: leftShuffledRandomValue[4],
+            rightImageViews[0]: rightShuffledRandomValue[0],
+            rightImageViews[1]: rightShuffledRandomValue[1],
+            rightImageViews[2]: rightShuffledRandomValue[2],
+            rightImageViews[3]: rightShuffledRandomValue[3],
+            rightImageViews[4]: rightShuffledRandomValue[4]
         ]
-    }
+        var leftLabelIndex = 0
+        leftLabels.forEach { label in
+            label.text = leftShuffledRandomValue[leftLabelIndex]
+            leftLabelIndex += 1
+        }
 
-    var dictonaryImageAndLabel: [UIImageView: UILabel] {
-        return [
-            leftImageViews[0]: leftLabels[0],
-            leftImageViews[1]: leftLabels[1],
-            leftImageViews[2]: leftLabels[2],
-            leftImageViews[3]: leftLabels[3],
-            leftImageViews[4]: leftLabels[4],
-            rightImageViews[0]: rightLabels[0],
-            rightImageViews[1]: rightLabels[1],
-            rightImageViews[2]: rightLabels[2],
-            rightImageViews[3]: rightLabels[3],
-            rightImageViews[4]: rightLabels[4]
-        ]
-    }
-    //選択したレイヤーをいれておく
-    private var selectLayer:CALayer!
-    //最後にタッチされた座標をいれておく
-    private var touchLastPoint:CGPoint!
+        var rightLabelIndex = 0
+        rightLabels.forEach { label in
+            label.text = rightShuffledRandomValue[rightLabelIndex]
+            rightLabelIndex += 1
+        }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        drawView.delegate = self
-        segmentedControl.selectedSegmentIndex = 0
         drawView.configure(
             labels: labels,
             leftLabels: leftLabels,
@@ -148,22 +147,8 @@ class ViewController: UIViewController {
             imageViews: imageViews,
             leftImageViews: leftImageViews,
             rightImageViews: rightImageViews,
-            randomValue: randomValue,
-            dictonaryImageAndValue: dictonaryImageAndValue,
-            dictonaryImageAndLabel: dictonaryImageAndLabel
+            dictonaryImageAndValue: dictonaryImageAndValue
         )
-
-        leftImageViews.forEach { imageView in
-//            imageView.layer.borderColor = UIColor.tintColor.cgColor
-//            //線の太さ(太さ)
-//            imageView.layer.borderWidth = 1
-        }
-        rightImageViews.forEach { imageView in
-
-//            imageView.layer.borderColor = UIColor.black.cgColor
-//            //線の太さ(太さ)
-//            imageView.layer.borderWidth = 1
-        }
 
     }
 
@@ -173,6 +158,21 @@ class ViewController: UIViewController {
 
     @IBAction func undoTapped(_ sender: Any) {
         drawView.undo()
+    }
+    @IBAction func decision(_ sender: Any) {
+        var countMiss = 0
+        if drawView.selectedValue.count != 5 {
+            //　全て選択されていないアラート
+            print("全て選択されていないです")
+        }
+        drawView.selectedValue.forEach { string in
+            let bool = string.0 == string.1
+            if bool == false {
+                countMiss += 1
+                return
+            }
+        }
+        present(UIAlertController.result(numberOfCorrectAnswers: 5 - countMiss), animated: true)
     }
 
     @IBAction func colorChanged(_ sender: Any) {
@@ -213,13 +213,13 @@ class DrawView: UIView {
     private var imageViews: [UIImageView] = []
     private var leftImageViews: [UIImageView] = []
     private var rightImageViews: [UIImageView] = []
-    private var randomValue :[String] = []
     private var dictonaryImageAndValue: [UIImageView: String] = [:]
-    private var dictonaryImageAndLabel: [UIImageView: UILabel] = [:]
 
 
     var setOfTwoImages:(first: UIImageView?, second: UIImageView?)
+    var setOfTwoValue: (first: String?,second: String?)
     var selectedImages:[UIImageView] = []
+    var selectedValue:[(String,String)] = []
     var imageSelectionStatus: ImageSelectionStatus = .nothingIsSelected
 
     func configure(
@@ -229,9 +229,7 @@ class DrawView: UIView {
         imageViews: [UIImageView],
         leftImageViews: [UIImageView],
         rightImageViews: [UIImageView],
-        randomValue :[String],
-        dictonaryImageAndValue: [UIImageView: String] ,
-        dictonaryImageAndLabel: [UIImageView: UILabel]
+        dictonaryImageAndValue: [UIImageView: String]
     ) {
         self.labels = labels
         self.leftLabels = leftLabels
@@ -239,9 +237,7 @@ class DrawView: UIView {
         self.imageViews = imageViews
         self.leftImageViews = leftImageViews
         self.rightImageViews = rightImageViews
-        self.randomValue = randomValue
         self.dictonaryImageAndValue = dictonaryImageAndValue
-        self.dictonaryImageAndLabel = dictonaryImageAndLabel
     }
 
     override func draw(_ rect: CGRect) {
@@ -259,14 +255,13 @@ class DrawView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
         let location = touch.location(in: self)
-        imageViews.forEach { imageView in
 
+        imageViews.forEach { imageView in
             let convertFrame = imageView.convert(imageView.bounds, to: self)
             if isPressedPositionInTheImageArea(convertFrame: convertFrame, touchedLocation: location) {
                 if selectedImages.contains(imageView) {
                     // TODO: アラート表示する。
                     delegate.selectedSelectionAlert()
-
                     return
                 }
                 currentDrawing = Drawing(startPoint: CGPoint(x: convertFrame.midX, y: convertFrame.midY))
@@ -274,17 +269,16 @@ class DrawView: UIView {
                 setNeedsDisplay()
                 // 選択された１つ目の画像
                 setOfTwoImages.first = imageView
+                setOfTwoValue.first = dictonaryImageAndValue[imageView]
                 if leftImageViews.contains(imageView) {
                     leftImageViews.forEach { imageView in
                         imageView.isHidden = true
-
                     }
                     imageSelectionStatus = .leftImage
                 } else {
                     if rightImageViews.contains(imageView) {
                         rightImageViews.forEach { image in
                             image.isHidden = true
-                            print(image)
                         }
                         imageSelectionStatus = .rightImage
                     }
@@ -292,7 +286,10 @@ class DrawView: UIView {
                 return
             } else {
             }
+
         }
+        print("^^^^^^^^^^^^^^^^^")
+
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -322,9 +319,11 @@ class DrawView: UIView {
                     drawing.endPoint = CGPoint(x: convertFrame.midX, y: convertFrame.midY)
                     finishedDrawings.append(drawing)
                     setOfTwoImages.second = imageView
+                    setOfTwoValue.second = dictonaryImageAndValue[imageView]
                     selectedImages.append(setOfTwoImages.first!)
                     selectedImages.append(setOfTwoImages.second!)
-                }
+                    selectedValue.append((setOfTwoValue.first!,setOfTwoValue.second!))
+                    }
             }
         case .leftImage:
             rightImageViews.forEach { imageView in
@@ -339,8 +338,10 @@ class DrawView: UIView {
                     drawing.endPoint = CGPoint(x: convertFrame.midX, y: convertFrame.midY)
                     finishedDrawings.append(drawing)
                     setOfTwoImages.second = imageView
+                    setOfTwoValue.second = dictonaryImageAndValue[imageView]
                     selectedImages.append(setOfTwoImages.first!)
                     selectedImages.append(setOfTwoImages.second!)
+                    selectedValue.append((setOfTwoValue.first!,setOfTwoValue.second!))
                 }
             }
         case .nothingIsSelected:
@@ -356,6 +357,7 @@ class DrawView: UIView {
 
     func clear() {
         selectedImages = []
+        selectedValue = []
         finishedDrawings.removeAll()
         setNeedsDisplay()
     }
