@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B28F6BCF285D49A100BAC772 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F6BCE285D49A100BAC772 /* InitialViewController.swift */; };
+		B2908CC0285BD4BF008CA874 /* hiragana_1column_unicode.csv in Resources */ = {isa = PBXBuildFile; fileRef = B2908CBF285BD4BE008CA874 /* hiragana_1column_unicode.csv */; };
+		B2908CC2285BD4CB008CA874 /* katakana_1column_unicode.csv in Resources */ = {isa = PBXBuildFile; fileRef = B2908CC1285BD4CB008CA874 /* katakana_1column_unicode.csv */; };
+		B2908CC4285BD606008CA874 /* CsvConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2908CC3285BD606008CA874 /* CsvConversion.swift */; };
 		B29172442853E6C700AB0BD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29172432853E6C700AB0BD3 /* AppDelegate.swift */; };
 		B29172462853E6C700AB0BD3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29172452853E6C700AB0BD3 /* SceneDelegate.swift */; };
 		B29172482853E6C700AB0BD3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29172472853E6C700AB0BD3 /* ViewController.swift */; };
@@ -15,9 +19,14 @@
 		B29172502853E6C900AB0BD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B291724E2853E6C900AB0BD3 /* LaunchScreen.storyboard */; };
 		B29172582853E6FA00AB0BD3 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29172572853E6FA00AB0BD3 /* Drawing.swift */; };
 		B2B36ED82856AC6900495EBB /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B36ED72856AC6900495EBB /* UIAlertController.swift */; };
+		B2BCEA7D285B5FD0004A6FAA /* 常用漢字(小学範囲除外).csv in Resources */ = {isa = PBXBuildFile; fileRef = B2BCEA7C285B5FD0004A6FAA /* 常用漢字(小学範囲除外).csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B28F6BCE285D49A100BAC772 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		B2908CBF285BD4BE008CA874 /* hiragana_1column_unicode.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hiragana_1column_unicode.csv; sourceTree = "<group>"; };
+		B2908CC1285BD4CB008CA874 /* katakana_1column_unicode.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = katakana_1column_unicode.csv; sourceTree = "<group>"; };
+		B2908CC3285BD606008CA874 /* CsvConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvConversion.swift; sourceTree = "<group>"; };
 		B29172402853E6C700AB0BD3 /* LineConnectingGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineConnectingGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29172432853E6C700AB0BD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B29172452853E6C700AB0BD3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -28,6 +37,7 @@
 		B29172512853E6C900AB0BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B29172572853E6FA00AB0BD3 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		B2B36ED72856AC6900495EBB /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
+		B2BCEA7C285B5FD0004A6FAA /* 常用漢字(小学範囲除外).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "常用漢字(小学範囲除外).csv"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +75,12 @@
 				B29172472853E6C700AB0BD3 /* ViewController.swift */,
 				B29172572853E6FA00AB0BD3 /* Drawing.swift */,
 				B2B36ED72856AC6900495EBB /* UIAlertController.swift */,
+				B2908CC3285BD606008CA874 /* CsvConversion.swift */,
 				B29172492853E6C700AB0BD3 /* Main.storyboard */,
+				B28F6BCE285D49A100BAC772 /* InitialViewController.swift */,
+				B2908CBF285BD4BE008CA874 /* hiragana_1column_unicode.csv */,
+				B2908CC1285BD4CB008CA874 /* katakana_1column_unicode.csv */,
+				B2BCEA7C285B5FD0004A6FAA /* 常用漢字(小学範囲除外).csv */,
 				B291724C2853E6C900AB0BD3 /* Assets.xcassets */,
 				B291724E2853E6C900AB0BD3 /* LaunchScreen.storyboard */,
 				B29172512853E6C900AB0BD3 /* Info.plist */,
@@ -132,7 +147,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B29172502853E6C900AB0BD3 /* LaunchScreen.storyboard in Resources */,
+				B2908CC0285BD4BF008CA874 /* hiragana_1column_unicode.csv in Resources */,
+				B2BCEA7D285B5FD0004A6FAA /* 常用漢字(小学範囲除外).csv in Resources */,
 				B291724D2853E6C900AB0BD3 /* Assets.xcassets in Resources */,
+				B2908CC2285BD4CB008CA874 /* katakana_1column_unicode.csv in Resources */,
 				B291724B2853E6C700AB0BD3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,9 +163,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B29172582853E6FA00AB0BD3 /* Drawing.swift in Sources */,
+				B28F6BCF285D49A100BAC772 /* InitialViewController.swift in Sources */,
 				B29172482853E6C700AB0BD3 /* ViewController.swift in Sources */,
 				B29172442853E6C700AB0BD3 /* AppDelegate.swift in Sources */,
 				B29172462853E6C700AB0BD3 /* SceneDelegate.swift in Sources */,
+				B2908CC4285BD606008CA874 /* CsvConversion.swift in Sources */,
 				B2B36ED82856AC6900495EBB /* UIAlertController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,8 +9,11 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var drawView: DrawView!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
 
+    
+    @IBOutlet weak var coinLabel: UILabel!
+    @IBOutlet weak var timerLabel: UILabel!
+    
     @IBOutlet weak var leftFirstLabel: UILabel!
     @IBOutlet weak var leftSecondLabel: UILabel!
     @IBOutlet weak var leftThirdLabel: UILabel!
@@ -33,7 +36,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var rightFourthImageView: UIImageView!
     @IBOutlet weak var rightFifthImageView: UIImageView!
 
-    private let randomNumber = 1...100
+    @IBOutlet private weak var correntNumLabel: UILabel!
     private var labels: [UILabel] {
         return [
             leftFirstLabel,
@@ -67,30 +70,8 @@ class ViewController: UIViewController {
         ]
     }
 
-    private var imageViews: [UIImageView] = []
-
-
-    private var leftImageViews: [UIImageView] = []
-
-    private var rightImageViews: [UIImageView] = []
-
-    var randomValue :[String] = ["1","2","3","4","5"]
-    var leftShuffledRandomValue: [String] = []
-    var rightShuffledRandomValue: [String] = []
-    var dictonaryImageAndValue: [UIImageView: String] = [:]
-    //選択したレイヤーをいれておく
-    private var selectLayer:CALayer!
-    //最後にタッチされた座標をいれておく
-    private var touchLastPoint:CGPoint!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        drawView.delegate = self
-        segmentedControl.selectedSegmentIndex = 0
-
-        leftShuffledRandomValue = randomValue.shuffled()
-        rightShuffledRandomValue = randomValue.shuffled()
-        imageViews = [
+    private var imageViews: [UIImageView] {
+        return [
             leftFirstImageView,
             leftSecondImageView,
             leftThirdImageView,
@@ -102,20 +83,67 @@ class ViewController: UIViewController {
             rightFourthImageView,
             rightFifthImageView
         ]
-        leftImageViews = [
+    }
+
+
+    private var leftImageViews: [UIImageView] {
+        return [
             leftFirstImageView,
             leftSecondImageView,
             leftThirdImageView,
             leftFourthImageView,
             leftFifthImageView
         ]
-        rightImageViews = [
+    }
+
+    private var rightImageViews: [UIImageView] {
+        return [
             rightFirstImageView,
             rightSecondImageView,
             rightThirdImageView,
             rightFourthImageView,
             rightFifthImageView
         ]
+    }
+    var allHiraganaShuffledValue: [String] = []
+    var allKatakanaShuffledValue: [String] = []
+    var filtedFiveRandomValue :[String] = []
+    var leftShuffledRandomValue: [String] = []
+    var rightShuffledRandomValue: [String] = []
+    var dictonaryImageAndValue: [UIImageView: String] = [:]
+
+    var correctNum: Int = 0
+    //選択したレイヤーをいれておく
+    private var selectLayer:CALayer!
+    //最後にタッチされた座標をいれておく
+    private var touchLastPoint:CGPoint!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        drawView.delegate = self
+        imageViews.forEach { image in
+            self.view.sendSubviewToBack(image)
+        }
+        drawView.setDrawingColor(color: UIColor.black)
+        randomValueInitializationAndConfigureLabel()
+        GameTimer = Timer.scheduledTimer(
+    timeInterval: 1,
+    target: self,
+    selector: #selector(countDown(timer: )),
+    userInfo: nil,
+    repeats: true)
+
+    }
+
+    func randomValueInitializationAndConfigureLabel() {
+        coinLabel.text = "×  \(correctNum)"
+        allHiraganaShuffledValue = CsvConversion.convertFacilityInformationFromCsv(characterType: .hiragana).shuffled()
+        allKatakanaShuffledValue = CsvConversion.convertFacilityInformationFromCsv(characterType: .katakana).shuffled()
+        filtedFiveRandomValue = Array(allKatakanaShuffledValue.prefix(5))
+
+        leftShuffledRandomValue = filtedFiveRandomValue.shuffled()
+        rightShuffledRandomValue = filtedFiveRandomValue.shuffled()
+
         dictonaryImageAndValue = [
             leftImageViews[0]: leftShuffledRandomValue[0],
             leftImageViews[1]: leftShuffledRandomValue[1],
@@ -139,7 +167,6 @@ class ViewController: UIViewController {
             label.text = rightShuffledRandomValue[rightLabelIndex]
             rightLabelIndex += 1
         }
-
         drawView.configure(
             labels: labels,
             leftLabels: leftLabels,
@@ -149,49 +176,52 @@ class ViewController: UIViewController {
             rightImageViews: rightImageViews,
             dictonaryImageAndValue: dictonaryImageAndValue
         )
+        correntNumLabel.text = "\(correctNum)個　正解 "
 
+    }
+    let time:Float = 60.0
+    var cnt:Float = 0
+    var count: Float { time - cnt }
+    var GameTimer: Timer?
+
+
+    @objc func countDown(timer: Timer) {
+        //カウントを１減らす
+        cnt += 1
+        //タイマーを止める
+        if count < 0 {
+            GameTimer?.invalidate()
+            self.timerLabel.text = TimerFormatter.string(from: 0)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.timerLabel.text = TimerFormatter.string(from: self!.count)
+            }
+        }
     }
 
     @IBAction func clearTapped(_ sender: Any) {
         drawView.clear()
     }
 
-    @IBAction func undoTapped(_ sender: Any) {
-        drawView.undo()
-    }
-    @IBAction func decision(_ sender: Any) {
-        var countMiss = 0
-        if drawView.selectedValue.count != 5 {
-            //　全て選択されていないアラート
-            print("全て選択されていないです")
-        }
-        drawView.selectedValue.forEach { string in
-            let bool = string.0 == string.1
-            if bool == false {
-                countMiss += 1
-                return
-            }
-        }
-        present(UIAlertController.result(numberOfCorrectAnswers: 5 - countMiss), animated: true)
-    }
-
-    @IBAction func colorChanged(_ sender: Any) {
-        var c = UIColor.black
-        switch segmentedControl.selectedSegmentIndex {
-        case 1:
-            c = UIColor.green
-            break
-        case 2:
-            c = UIColor.red
-            break
-        default:
-            break
-        }
-        drawView.setDrawingColor(color: c)
-    }
 }
 
 extension ViewController: ProtocolDrawView {
+    func precessingAfterCorrectAnswer() {
+        var countCorrect = 0
+
+        drawView.selectedValue.forEach { string in
+            let bool = string.0 == string.1
+            if bool == true {
+                countCorrect += 1
+                return
+            }
+        }
+        if countCorrect == 5 {
+            correctNum += 1
+            randomValueInitializationAndConfigureLabel()
+        }
+    }
+
     func selectedSelectionAlert() {
         present(UIAlertController.checkIsSelection(), animated: true)
     }
@@ -288,8 +318,6 @@ class DrawView: UIView {
             }
 
         }
-        print("^^^^^^^^^^^^^^^^^")
-
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -323,7 +351,7 @@ class DrawView: UIView {
                     selectedImages.append(setOfTwoImages.first!)
                     selectedImages.append(setOfTwoImages.second!)
                     selectedValue.append((setOfTwoValue.first!,setOfTwoValue.second!))
-                    }
+                }
             }
         case .leftImage:
             rightImageViews.forEach { imageView in
@@ -353,20 +381,18 @@ class DrawView: UIView {
         }
         currentDrawing = nil
         setNeedsDisplay()
+
+        if selectedValue.count == 5 {
+
+            delegate.precessingAfterCorrectAnswer()
+            clear()
+        }
     }
 
     func clear() {
         selectedImages = []
         selectedValue = []
         finishedDrawings.removeAll()
-        setNeedsDisplay()
-    }
-
-    func undo() {
-        if finishedDrawings.count == 0 {
-            return
-        }
-        finishedDrawings.remove(at: finishedDrawings.count - 1)
         setNeedsDisplay()
     }
 
@@ -377,7 +403,7 @@ class DrawView: UIView {
     func stroke(drawing: Drawing) {
         let path = UIBezierPath()
 
-        path.lineWidth = 10.0
+        path.lineWidth = 8.0
         path.lineCapStyle = .round
         path.lineJoinStyle = .round
 
@@ -392,12 +418,22 @@ class DrawView: UIView {
 
     func isPressedPositionInTheImageArea(convertFrame: CGRect,touchedLocation: CGPoint ) -> Bool{
         return convertFrame.minX <= touchedLocation.x
-            && convertFrame.maxX >= touchedLocation.x
-            && convertFrame.minY <= touchedLocation.y
-            && convertFrame.maxY >= touchedLocation.y
+        && convertFrame.maxX >= touchedLocation.x
+        && convertFrame.minY <= touchedLocation.y
+        && convertFrame.maxY >= touchedLocation.y
     }
 }
 
 protocol ProtocolDrawView {
     func selectedSelectionAlert()
+    func precessingAfterCorrectAnswer()
+}
+
+/// タイマーのformatter
+struct TimerFormatter {
+    static func string(from absoluteTime: Float) -> String {
+        var (sec): (Int)
+        (sec, _) = Int(absoluteTime * 100).quotientAndRemainder(dividingBy: 100)
+        return String(format: "残り%02ld秒", sec)
+    }
 }
