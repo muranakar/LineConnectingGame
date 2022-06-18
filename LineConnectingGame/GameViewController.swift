@@ -7,13 +7,13 @@
 // 参考: https://uruly.xyz/%E3%80%90swift-3%E3%80%91calayer%E3%82%92%E7%94%A8%E3%81%84%E3%81%A6%E5%9B%B3%E5%BD%A2%E3%82%92%E7%A7%BB%E5%8B%95%E3%83%BB%E6%8B%A1%E5%A4%A7%E7%B8%AE%E5%B0%8F%E3%81%97%E3%81%A6%E3%81%BF%E3%81%9F/
 import UIKit
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     @IBOutlet weak var drawView: DrawView!
 
-    
+
     @IBOutlet weak var coinLabel: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
-    
+
     @IBOutlet weak var leftFirstLabel: UILabel!
     @IBOutlet weak var leftSecondLabel: UILabel!
     @IBOutlet weak var leftThirdLabel: UILabel!
@@ -37,6 +37,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var rightFifthImageView: UIImageView!
 
     @IBOutlet private weak var correntNumLabel: UILabel!
+
+    // MARK: - IBOutletをクロージャでまとめている
     private var labels: [UILabel] {
         return [
             leftFirstLabel,
@@ -105,18 +107,43 @@ class ViewController: UIViewController {
             rightFifthImageView
         ]
     }
-    var allHiraganaShuffledValue: [String] = []
-    var allKatakanaShuffledValue: [String] = []
+
+    // MARK: - ランダムの値を出力するために用いているプロパティ
+    var characterType: CharacterType
+    var allShuffledValue: [String] = []
     var filtedFiveRandomValue :[String] = []
     var leftShuffledRandomValue: [String] = []
     var rightShuffledRandomValue: [String] = []
     var dictonaryImageAndValue: [UIImageView: String] = [:]
 
+    // MARK: - 正解の数
     var correctNum: Int = 0
+
+    // MARK: - 図形の挙動にまつわるプロパティ
     //選択したレイヤーをいれておく
     private var selectLayer:CALayer!
     //最後にタッチされた座標をいれておく
     private var touchLastPoint:CGPoint!
+
+    // MARK: - タイマー関係のプロパティ
+    let time:Float = 5.0
+    var cnt:Float = 0
+    var count: Float { time - cnt }
+    var GameTimer: Timer?
+
+    // MARK: - コイン関係のプロパティ
+    var coin: Int
+
+
+    required init?(coder: NSCoder,characterType: CharacterType) {
+        self.coin = CoinRepository.load() ?? 0
+        self.characterType = characterType
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,6 +153,7 @@ class ViewController: UIViewController {
         }
         drawView.setDrawingColor(color: UIColor.black)
         randomValueInitializationAndConfigureLabel()
+        timerLabel.text = TimerFormatter.string(from: count)
         GameTimer = Timer.scheduledTimer(
     timeInterval: 1,
     target: self,
@@ -135,11 +163,11 @@ class ViewController: UIViewController {
 
     }
 
+    // MARK: - メソッド
     func randomValueInitializationAndConfigureLabel() {
-        coinLabel.text = "×  \(correctNum)"
-        allHiraganaShuffledValue = CsvConversion.convertFacilityInformationFromCsv(characterType: .hiragana).shuffled()
-        allKatakanaShuffledValue = CsvConversion.convertFacilityInformationFromCsv(characterType: .katakana).shuffled()
-        filtedFiveRandomValue = Array(allKatakanaShuffledValue.prefix(5))
+        coinLabel.text = "×  \(coin)"
+        allShuffledValue = CsvConversion.convertFacilityInformationFromCsv(characterType: characterType).shuffled()
+        filtedFiveRandomValue = Array(allShuffledValue.prefix(5))
 
         leftShuffledRandomValue = filtedFiveRandomValue.shuffled()
         rightShuffledRandomValue = filtedFiveRandomValue.shuffled()
@@ -179,10 +207,6 @@ class ViewController: UIViewController {
         correntNumLabel.text = "\(correctNum)個　正解 "
 
     }
-    let time:Float = 60.0
-    var cnt:Float = 0
-    var count: Float { time - cnt }
-    var GameTimer: Timer?
 
 
     @objc func countDown(timer: Timer) {
@@ -191,7 +215,11 @@ class ViewController: UIViewController {
         //タイマーを止める
         if count < 0 {
             GameTimer?.invalidate()
+
             self.timerLabel.text = TimerFormatter.string(from: 0)
+
+            CoinRepository.save(coinNum: coin)
+            performSegue(withIdentifier: "result", sender: nil)
         } else {
             DispatchQueue.main.async { [weak self] in
                 self?.timerLabel.text = TimerFormatter.string(from: self!.count)
@@ -205,7 +233,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: ProtocolDrawView {
+extension GameViewController: ProtocolDrawView {
     func precessingAfterCorrectAnswer() {
         var countCorrect = 0
 
@@ -218,12 +246,13 @@ extension ViewController: ProtocolDrawView {
         }
         if countCorrect == 5 {
             correctNum += 1
+            coin += 1
             randomValueInitializationAndConfigureLabel()
         }
     }
 
     func selectedSelectionAlert() {
-        present(UIAlertController.checkIsSelection(), animated: true)
+//        present(UIAlertController.checkIsSelection(), animated: true)
     }
 }
 
@@ -421,6 +450,13 @@ class DrawView: UIView {
         && convertFrame.maxX >= touchedLocation.x
         && convertFrame.minY <= touchedLocation.y
         && convertFrame.maxY >= touchedLocation.y
+    }
+}
+
+private extension GameViewController {
+    @IBSegueAction
+    func makeResult(coder: NSCoder, sender: Any?, segueIdentifier: String?) -> ResultViewController? {
+        return ResultViewController(coder: coder, correntNum: correctNum, coin: coin)
     }
 }
 

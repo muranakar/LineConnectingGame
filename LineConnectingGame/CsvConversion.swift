@@ -19,13 +19,25 @@ struct CsvConversion {
         }
         let csvString = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
         csvLineOneDimensional = csvString.components(separatedBy: "\r\n")
-        return csvLineOneDimensional
+        var filtercsvLineOneDimensional = csvLineOneDimensional
+            .map { string in
+            string.replacingOccurrences(of: ",", with: "")
+            }.map { string in
+                String(string.prefix(1))
+            }.filter { string in
+                string.count == 1
+            }
+
+        filtercsvLineOneDimensional.removeAll { string in string == "" || string == " "}
+        return filtercsvLineOneDimensional
     }
 }
 
 enum CharacterType: CaseIterable {
     case hiragana
     case katakana
+    case emoji
+    case kanzi
 }
 
 extension CharacterType {
@@ -35,6 +47,10 @@ extension CharacterType {
             return "hiragana_1column_unicode"
         case .katakana:
             return "katakana_1column_unicode"
+        case .emoji:
+            return "emoji"
+        case .kanzi:
+            return "joyokanzi"
         }
     }
 }
