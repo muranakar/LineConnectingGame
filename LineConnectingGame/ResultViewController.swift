@@ -56,8 +56,8 @@ class ResultViewController: UIViewController {
     }
 
     func shareOnLine() {
-        let urlscheme: String = "line://msg/text"
-        let message = "iPhone X\n\n私たちはずっと変わらないビジョンを持ち続けてきました。\nすべてがスクリーンのiPhoneを作ること。\n\nhttps://www.apple.com/jp/iphone-x/"
+        let urlscheme: String = "https://line.me/R/share?text="
+        let message = "【つなぐもじ】コインを合計\(coin)枚獲得！"
 
         // line:/msg/text/(メッセージ)
         let urlstring = urlscheme + "/" + message
@@ -94,6 +94,9 @@ class ResultViewController: UIViewController {
         coinLabel.text = "×  \(coin)"
     }
     private func configureViewButton() {
-        backButton.setTitleColor(.black, for: .normal)
+        backButton.tintColor = UIColor(named: "string")!
+        backButton.layer.cornerRadius = backButton.frame.width / 2
+        backButton.layer.borderWidth = 3
+        backButton.layer.borderColor = UIColor(named: "string")!.cgColor
     }
 }

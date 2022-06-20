@@ -11,6 +11,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var drawView: DrawView!
 
 
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var coinLabel: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
 
@@ -126,7 +127,7 @@ class GameViewController: UIViewController {
     private var touchLastPoint:CGPoint!
 
     // MARK: - タイマー関係のプロパティ
-    let time:Float = 5.0
+    let time:Float = 60.0
     var cnt:Float = 0
     var count: Float { time - cnt }
     var GameTimer: Timer?
@@ -151,7 +152,7 @@ class GameViewController: UIViewController {
         imageViews.forEach { image in
             self.view.sendSubviewToBack(image)
         }
-        drawView.setDrawingColor(color: UIColor.black)
+        drawView.setDrawingColor(color: UIColor(named: "string")!)
         randomValueInitializationAndConfigureLabel()
         timerLabel.text = TimerFormatter.string(from: count)
         GameTimer = Timer.scheduledTimer(
@@ -160,9 +161,20 @@ class GameViewController: UIViewController {
     selector: #selector(countDown(timer: )),
     userInfo: nil,
     repeats: true)
-
+        configureViewImageView()
+        configureViewButton()
     }
 
+    private func configureViewButton() {
+        resetButton.tintColor = UIColor(named: "string")!
+        resetButton.layer.cornerRadius = resetButton.frame.width / 2
+        resetButton.layer.borderWidth = 3
+        resetButton.layer.borderColor = UIColor(named: "string")!.cgColor
+    }
+
+    func configureViewImageView() {
+
+    }
     // MARK: - メソッド
     func randomValueInitializationAndConfigureLabel() {
         coinLabel.text = "×  \(coin)"
@@ -265,7 +277,7 @@ class DrawView: UIView {
     var delegate: ProtocolDrawView!
     private var currentDrawing: Drawing?
     private var finishedDrawings: [Drawing] = []
-    private var currentColor = UIColor.black
+    private var currentColor = UIColor(named: "string")!
     private var labels: [UILabel] = []
     private var leftLabels: [UILabel] = []
     private var rightLabels: [UILabel] = []
@@ -472,4 +484,14 @@ struct TimerFormatter {
         (sec, _) = Int(absoluteTime * 100).quotientAndRemainder(dividingBy: 100)
         return String(format: "残り%02ld秒", sec)
     }
+}
+
+private extension UITraitCollection {
+    static var isDarkMode: Bool {
+        if #available(iOS 13, *), current.userInterfaceStyle == .dark {
+            return true
+        }
+        return false
+    }
+
 }

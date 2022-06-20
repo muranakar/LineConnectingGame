@@ -58,23 +58,23 @@ class InitialViewController: UIViewController {
     private func convfigureViewButton() {
         allButton.forEach { button in
             button.layer.borderWidth = 3
-            button.layer.borderColor = UIColor.black.cgColor
+            button.layer.borderColor = UIColor.init(named: "string")?.cgColor
             button.layer.cornerRadius = 10
             button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
-            button.setTitleColor(.black, for: .normal)
+            button.setTitleColor(UIColor.init(named: "string"), for: .normal)
             button.setTitleColor(.gray, for: .disabled)
         }
     }
     private func configureButtonIsEnabled() {
         let coin = CoinRepository.load() ?? 0
-        if coin <= 100 {
+        if coin < 100 {
             randomButton.isEnabled = false
             emojiButton.isEnabled = false
             katakanaButton.isEnabled = false
-        } else if coin <= 300 {
+        } else if coin < 300 {
             randomButton.isEnabled = false
             emojiButton.isEnabled = false
-        } else if  coin <= 500{
+        } else if  coin < 500{
             randomButton.isEnabled = false
         }
     }
