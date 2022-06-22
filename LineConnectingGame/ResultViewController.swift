@@ -6,19 +6,36 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class ResultViewController: UIViewController {
-
     @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var correntNumLabel: UILabel!
     @IBOutlet private weak var coinLabel: UILabel!
+    @IBOutlet weak private var bannerView: GADBannerView!  // 追加したUIViewを接続
 
     private var correntNum: Int
     private var coin: Int
+
+    private var interstitial: GADInterstitialAd?
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewLabel()
         configureViewButton()
+        configureAdBannar()
+        // インタースティシャル広告
+        let request = GADRequest()
+          GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3713368437594912/5360416890",
+                                      request: request,
+                            completionHandler: { [self] ad, error in
+                              if let error = error {
+                                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                return
+                              }
+                              interstitial = ad
+                              interstitial?.fullScreenContentDelegate = self
+                            }
+          )
     }
     
     required init?(coder: NSCoder,correntNum: Int, coin: Int) {
@@ -30,6 +47,22 @@ class ResultViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    @IBAction func backButtonAction(_ sender: Any) {
+        // 広告を３回に、１回表示する処理
+        let adNum = GADRepository.processAfterAddGADNumPulsOneAndSaveGADNum()
+        print(adNum)
+        if adNum % 3 == 0 {
+            if interstitial != nil {
+                interstitial?.present(fromRootViewController: self)
+             } else {
+               print("Ad wasn't ready")
+             }
+        } else {
+            performSegue(withIdentifier: "initial", sender: nil)
+        }
+    }
+
 
     @IBAction func shareTwitter(_ sender: Any) {
         shareOnTwitter()
@@ -89,6 +122,14 @@ class ResultViewController: UIViewController {
             present(alertController,animated: true,completion: nil)
         }
     }
+    private func configureAdBannar() {
+        // GADBannerViewのプロパティを設定
+        bannerView.adUnitID = "\(GoogleAdID.bannerID)"
+        bannerView.rootViewController = self
+
+        // 広告読み込み
+        bannerView.load(GADRequest())
+    }
     private func configureViewLabel() {
         correntNumLabel.text = "×  \(correntNum)"
         coinLabel.text = "×  \(coin)"
@@ -98,5 +139,16 @@ class ResultViewController: UIViewController {
         backButton.layer.cornerRadius = backButton.frame.width / 2
         backButton.layer.borderWidth = 3
         backButton.layer.borderColor = UIColor(named: "string")!.cgColor
+    }
+}
+
+extension ResultViewController: GADFullScreenContentDelegate {
+    /// Tells the delegate that the ad failed to present full screen content.
+     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+         performSegue(withIdentifier: "initial", sender: nil)
+     }
+    /// Tells the delegate that the ad dismissed full screen content.
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        performSegue(withIdentifier: "initial", sender: nil)
     }
 }

@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66983420DA29BE425BBFD099 /* Pods_LineConnectingGame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C9BEF1443E79D4A216BDB07 /* Pods_LineConnectingGame.framework */; };
 		B24E231D285DFDA100158764 /* joyokanzi.csv in Resources */ = {isa = PBXBuildFile; fileRef = B24E231C285DFDA100158764 /* joyokanzi.csv */; };
+		B2799C43286283CF00BB6A5E /* GoogleAdID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2799C42286283CF00BB6A5E /* GoogleAdID.swift */; };
+		B2799C47286293B000BB6A5E /* GADRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2799C46286293B000BB6A5E /* GADRepository.swift */; };
 		B28F6BCF285D49A100BAC772 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F6BCE285D49A100BAC772 /* InitialViewController.swift */; };
 		B28F6BD1285D712700BAC772 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F6BD0285D712700BAC772 /* ResultViewController.swift */; };
 		B28F6BD3285DB5B700BAC772 /* CoinRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F6BD2285DB5B700BAC772 /* CoinRepository.swift */; };
@@ -26,7 +29,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C9BEF1443E79D4A216BDB07 /* Pods_LineConnectingGame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LineConnectingGame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		81E7C3D11DA1DB7F7E1FD468 /* Pods-LineConnectingGame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineConnectingGame.release.xcconfig"; path = "Target Support Files/Pods-LineConnectingGame/Pods-LineConnectingGame.release.xcconfig"; sourceTree = "<group>"; };
 		B24E231C285DFDA100158764 /* joyokanzi.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = joyokanzi.csv; sourceTree = "<group>"; };
+		B2799C42286283CF00BB6A5E /* GoogleAdID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAdID.swift; sourceTree = "<group>"; };
+		B2799C46286293B000BB6A5E /* GADRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADRepository.swift; sourceTree = "<group>"; };
 		B28F6BCE285D49A100BAC772 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		B28F6BD0285D712700BAC772 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		B28F6BD2285DB5B700BAC772 /* CoinRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinRepository.swift; sourceTree = "<group>"; };
@@ -44,6 +51,7 @@
 		B29172512853E6C900AB0BD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B29172572853E6FA00AB0BD3 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		B2B36ED72856AC6900495EBB /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
+		BF4122F2765F88AA0D1AFDA3 /* Pods-LineConnectingGame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineConnectingGame.debug.xcconfig"; path = "Target Support Files/Pods-LineConnectingGame/Pods-LineConnectingGame.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,17 +59,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66983420DA29BE425BBFD099 /* Pods_LineConnectingGame.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39CDA53B9C58885653927B5F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4C9BEF1443E79D4A216BDB07 /* Pods_LineConnectingGame.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9F7620C404165685A2F67EED /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BF4122F2765F88AA0D1AFDA3 /* Pods-LineConnectingGame.debug.xcconfig */,
+				81E7C3D11DA1DB7F7E1FD468 /* Pods-LineConnectingGame.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		B29172372853E6C700AB0BD3 = {
 			isa = PBXGroup;
 			children = (
 				B29172422853E6C700AB0BD3 /* LineConnectingGame */,
 				B29172412853E6C700AB0BD3 /* Products */,
+				9F7620C404165685A2F67EED /* Pods */,
+				39CDA53B9C58885653927B5F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,10 +107,12 @@
 				B29172432853E6C700AB0BD3 /* AppDelegate.swift */,
 				B29172452853E6C700AB0BD3 /* SceneDelegate.swift */,
 				B29172572853E6FA00AB0BD3 /* Drawing.swift */,
+				B2799C42286283CF00BB6A5E /* GoogleAdID.swift */,
 				B2B36ED72856AC6900495EBB /* UIAlertController.swift */,
 				B2908CC3285BD606008CA874 /* CsvConversion.swift */,
 				B29172492853E6C700AB0BD3 /* Main.storyboard */,
 				B28F6BD2285DB5B700BAC772 /* CoinRepository.swift */,
+				B2799C46286293B000BB6A5E /* GADRepository.swift */,
 				B28F6BCE285D49A100BAC772 /* InitialViewController.swift */,
 				B29172472853E6C700AB0BD3 /* GameViewController.swift */,
 				B28F6BD0285D712700BAC772 /* ResultViewController.swift */,
@@ -104,9 +134,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B29172542853E6C900AB0BD3 /* Build configuration list for PBXNativeTarget "LineConnectingGame" */;
 			buildPhases = (
+				E0A858C54B300156BEBA6A5C /* [CP] Check Pods Manifest.lock */,
 				B291723C2853E6C700AB0BD3 /* Sources */,
 				B291723D2853E6C700AB0BD3 /* Frameworks */,
 				B291723E2853E6C700AB0BD3 /* Resources */,
+				A534F189731415B72E45E158 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -167,6 +199,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A534F189731415B72E45E158 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LineConnectingGame/Pods-LineConnectingGame-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LineConnectingGame/Pods-LineConnectingGame-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LineConnectingGame/Pods-LineConnectingGame-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0A858C54B300156BEBA6A5C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LineConnectingGame-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B291723C2853E6C700AB0BD3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -178,8 +252,10 @@
 				B28F6BD1285D712700BAC772 /* ResultViewController.swift in Sources */,
 				B29172442853E6C700AB0BD3 /* AppDelegate.swift in Sources */,
 				B28F6BD3285DB5B700BAC772 /* CoinRepository.swift in Sources */,
+				B2799C43286283CF00BB6A5E /* GoogleAdID.swift in Sources */,
 				B29172462853E6C700AB0BD3 /* SceneDelegate.swift in Sources */,
 				B2908CC4285BD606008CA874 /* CsvConversion.swift in Sources */,
+				B2799C47286293B000BB6A5E /* GADRepository.swift in Sources */,
 				B2B36ED82856AC6900495EBB /* UIAlertController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +398,7 @@
 		};
 		B29172552853E6C900AB0BD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF4122F2765F88AA0D1AFDA3 /* Pods-LineConnectingGame.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -331,6 +408,7 @@
 				DEVELOPMENT_TEAM = DJ7VR35KC8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LineConnectingGame/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "つなぐもじ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -346,12 +424,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		B29172562853E6C900AB0BD3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81E7C3D11DA1DB7F7E1FD468 /* Pods-LineConnectingGame.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -361,6 +440,7 @@
 				DEVELOPMENT_TEAM = DJ7VR35KC8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LineConnectingGame/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "つなぐもじ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -376,7 +456,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -2,10 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array/>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3713368437594912~1181640958</string>
 	<key>Item 0</key>
 	<string>line</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

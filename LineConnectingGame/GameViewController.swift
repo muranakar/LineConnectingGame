@@ -6,6 +6,7 @@
 //
 // 参考: https://uruly.xyz/%E3%80%90swift-3%E3%80%91calayer%E3%82%92%E7%94%A8%E3%81%84%E3%81%A6%E5%9B%B3%E5%BD%A2%E3%82%92%E7%A7%BB%E5%8B%95%E3%83%BB%E6%8B%A1%E5%A4%A7%E7%B8%AE%E5%B0%8F%E3%81%97%E3%81%A6%E3%81%BF%E3%81%9F/
 import UIKit
+import GoogleMobileAds
 
 class GameViewController: UIViewController {
     @IBOutlet weak var drawView: DrawView!
@@ -38,6 +39,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var rightFifthImageView: UIImageView!
 
     @IBOutlet private weak var correntNumLabel: UILabel!
+    @IBOutlet weak private var bannerView: GADBannerView!  // 追加したUIViewを接続
 
     // MARK: - IBOutletをクロージャでまとめている
     private var labels: [UILabel] {
@@ -127,7 +129,7 @@ class GameViewController: UIViewController {
     private var touchLastPoint:CGPoint!
 
     // MARK: - タイマー関係のプロパティ
-    let time:Float = 60.0
+    let time:Float = 5.0
     var cnt:Float = 0
     var count: Float { time - cnt }
     var GameTimer: Timer?
@@ -161,7 +163,7 @@ class GameViewController: UIViewController {
     selector: #selector(countDown(timer: )),
     userInfo: nil,
     repeats: true)
-        configureViewImageView()
+        configureAdBannar()
         configureViewButton()
     }
 
@@ -172,9 +174,14 @@ class GameViewController: UIViewController {
         resetButton.layer.borderColor = UIColor(named: "string")!.cgColor
     }
 
-    func configureViewImageView() {
+    private func configureAdBannar() {
+           // GADBannerViewのプロパティを設定
+           bannerView.adUnitID = "\(GoogleAdID.bannerID)"
+           bannerView.rootViewController = self
 
-    }
+           // 広告読み込み
+           bannerView.load(GADRequest())
+       }
     // MARK: - メソッド
     func randomValueInitializationAndConfigureLabel() {
         coinLabel.text = "×  \(coin)"

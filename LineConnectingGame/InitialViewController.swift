@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class InitialViewController: UIViewController {
 
@@ -14,6 +15,7 @@ class InitialViewController: UIViewController {
     @IBOutlet weak var katakanaButton: UIButton!
     @IBOutlet weak var emojiButton: UIButton!
     @IBOutlet weak var randomButton: UIButton!
+    @IBOutlet weak private var bannerView: GADBannerView!  // 追加したUIViewを接続
     private var allButton: [UIButton] {
         [
             hiraganaButton,
@@ -27,6 +29,7 @@ class InitialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureButtonIsEnabled()
+        configureAdBannar()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -65,6 +68,16 @@ class InitialViewController: UIViewController {
             button.setTitleColor(.gray, for: .disabled)
         }
     }
+
+    private func configureAdBannar() {
+        // GADBannerViewのプロパティを設定
+        bannerView.adUnitID = "\(GoogleAdID.bannerID)"
+        bannerView.rootViewController = self
+
+        // 広告読み込み
+        bannerView.load(GADRequest())
+    }
+
     private func configureButtonIsEnabled() {
         let coin = CoinRepository.load() ?? 0
         if coin < 100 {
