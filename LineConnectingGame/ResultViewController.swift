@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StoreKit
 import GoogleMobileAds
 
 class ResultViewController: UIViewController {
@@ -25,17 +26,17 @@ class ResultViewController: UIViewController {
         configureAdBannar()
         // インタースティシャル広告
         let request = GADRequest()
-          GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3713368437594912/5360416890",
-                                      request: request,
-                            completionHandler: { [self] ad, error in
-                              if let error = error {
-                                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                                return
-                              }
-                              interstitial = ad
-                              interstitial?.fullScreenContentDelegate = self
-                            }
-          )
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3713368437594912/5360416890",
+                               request: request,
+                               completionHandler: { [self] ad, error in
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            interstitial = ad
+            interstitial?.fullScreenContentDelegate = self
+        }
+        )
     }
     
     required init?(coder: NSCoder,correntNum: Int, coin: Int) {
@@ -51,13 +52,20 @@ class ResultViewController: UIViewController {
     @IBAction func backButtonAction(_ sender: Any) {
         // 広告を３回に、１回表示する処理
         let adNum = GADRepository.processAfterAddGADNumPulsOneAndSaveGADNum()
-        print(adNum)
+        let reviewNum = ReviewRepository.processAfterAddReviewNumPulsOneAndSaveReviewNum()
+
+        if reviewNum == 5 || reviewNum == 20{
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
+        }
+
         if adNum % 3 == 0 {
             if interstitial != nil {
                 interstitial?.present(fromRootViewController: self)
-             } else {
-               print("Ad wasn't ready")
-             }
+            } else {
+                performSegue(withIdentifier: "initial", sender: nil)
+            }
         } else {
             performSegue(withIdentifier: "initial", sender: nil)
         }
@@ -75,7 +83,7 @@ class ResultViewController: UIViewController {
     func shareOnTwitter() {
         //シェアするテキストを作成
         let text = "【つなぐもじ】コインを合計\(coin)枚獲得！"
-        let hashTag = "#発達支援"
+        let hashTag = "#発達支援#高次脳機能#注意力#学習障害#脳トレ\nhttps://apps.apple.com/jp/app/%E3%81%A4%E3%81%AA%E3%81%90%E3%82%82%E3%81%98%E3%83%BC%E5%90%8C%E3%81%98%E6%96%87%E5%AD%97%E3%82%92%E3%81%A4%E3%81%AA%E3%81%92%E3%82%88%E3%81%86%E3%83%BC/id1630835450"
         let completedText = text + "\n" + hashTag
 
         //作成したテキストをエンコード
@@ -90,7 +98,7 @@ class ResultViewController: UIViewController {
 
     func shareOnLine() {
         let urlscheme: String = "https://line.me/R/share?text="
-        let message = "【つなぐもじ】コインを合計\(coin)枚獲得！"
+        let message = "【つなぐもじ】コインを合計\(coin)枚獲得！\nhttps://apps.apple.com/jp/app/%E3%81%A4%E3%81%AA%E3%81%90%E3%82%82%E3%81%98%E3%83%BC%E5%90%8C%E3%81%98%E6%96%87%E5%AD%97%E3%82%92%E3%81%A4%E3%81%AA%E3%81%92%E3%82%88%E3%81%86%E3%83%BC/id1630835450"
 
         // line:/msg/text/(メッセージ)
         let urlstring = urlscheme + "/" + message
@@ -144,9 +152,9 @@ class ResultViewController: UIViewController {
 
 extension ResultViewController: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad failed to present full screen content.
-     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-         performSegue(withIdentifier: "initial", sender: nil)
-     }
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        performSegue(withIdentifier: "initial", sender: nil)
+    }
     /// Tells the delegate that the ad dismissed full screen content.
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         performSegue(withIdentifier: "initial", sender: nil)

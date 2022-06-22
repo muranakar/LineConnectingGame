@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		66983420DA29BE425BBFD099 /* Pods_LineConnectingGame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C9BEF1443E79D4A216BDB07 /* Pods_LineConnectingGame.framework */; };
 		B24E231D285DFDA100158764 /* joyokanzi.csv in Resources */ = {isa = PBXBuildFile; fileRef = B24E231C285DFDA100158764 /* joyokanzi.csv */; };
+		B25155782863496800BBC31D /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25155772863496800BBC31D /* ReviewRepository.swift */; };
 		B2799C43286283CF00BB6A5E /* GoogleAdID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2799C42286283CF00BB6A5E /* GoogleAdID.swift */; };
 		B2799C47286293B000BB6A5E /* GADRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2799C46286293B000BB6A5E /* GADRepository.swift */; };
 		B28F6BCF285D49A100BAC772 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F6BCE285D49A100BAC772 /* InitialViewController.swift */; };
@@ -32,6 +33,7 @@
 		4C9BEF1443E79D4A216BDB07 /* Pods_LineConnectingGame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LineConnectingGame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E7C3D11DA1DB7F7E1FD468 /* Pods-LineConnectingGame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineConnectingGame.release.xcconfig"; path = "Target Support Files/Pods-LineConnectingGame/Pods-LineConnectingGame.release.xcconfig"; sourceTree = "<group>"; };
 		B24E231C285DFDA100158764 /* joyokanzi.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = joyokanzi.csv; sourceTree = "<group>"; };
+		B25155772863496800BBC31D /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		B2799C42286283CF00BB6A5E /* GoogleAdID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAdID.swift; sourceTree = "<group>"; };
 		B2799C46286293B000BB6A5E /* GADRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADRepository.swift; sourceTree = "<group>"; };
 		B28F6BCE285D49A100BAC772 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				B29172492853E6C700AB0BD3 /* Main.storyboard */,
 				B28F6BD2285DB5B700BAC772 /* CoinRepository.swift */,
 				B2799C46286293B000BB6A5E /* GADRepository.swift */,
+				B25155772863496800BBC31D /* ReviewRepository.swift */,
 				B28F6BCE285D49A100BAC772 /* InitialViewController.swift */,
 				B29172472853E6C700AB0BD3 /* GameViewController.swift */,
 				B28F6BD0285D712700BAC772 /* ResultViewController.swift */,
@@ -249,6 +252,7 @@
 				B29172582853E6FA00AB0BD3 /* Drawing.swift in Sources */,
 				B28F6BCF285D49A100BAC772 /* InitialViewController.swift in Sources */,
 				B29172482853E6C700AB0BD3 /* GameViewController.swift in Sources */,
+				B25155782863496800BBC31D /* ReviewRepository.swift in Sources */,
 				B28F6BD1285D712700BAC772 /* ResultViewController.swift in Sources */,
 				B29172442853E6C700AB0BD3 /* AppDelegate.swift in Sources */,
 				B28F6BD3285DB5B700BAC772 /* CoinRepository.swift in Sources */,
@@ -419,7 +423,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = LineConnectingGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -451,7 +455,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = LineConnectingGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -129,7 +129,7 @@ class GameViewController: UIViewController {
     private var touchLastPoint:CGPoint!
 
     // MARK: - タイマー関係のプロパティ
-    let time:Float = 5.0
+    let time:Float = 60.0
     var cnt:Float = 0
     var count: Float { time - cnt }
     var GameTimer: Timer?
