@@ -54,8 +54,8 @@ class ResultViewController: UIViewController {
         let adNum = GADRepository.processAfterAddGADNumPulsOneAndSaveGADNum()
         let reviewNum = ReviewRepository.processAfterAddReviewNumPulsOneAndSaveReviewNum()
 
-        if reviewNum == 5 || reviewNum == 20{
-            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+        if reviewNum == 5 || reviewNum == 20 || reviewNum == 50 {
+            if let scene = view.window?.windowScene {
                 SKStoreReviewController.requestReview(in: scene)
             }
         }
@@ -78,6 +78,9 @@ class ResultViewController: UIViewController {
 
     @IBAction func shareLine(_ sender: Any) {
         shareOnLine()
+    }
+    @IBAction private func shareOtherApp(_ sender: Any) {
+           shareOnOtherApp()
     }
 
     func shareOnTwitter() {
@@ -130,6 +133,13 @@ class ResultViewController: UIViewController {
             present(alertController,animated: true,completion: nil)
         }
     }
+
+    private func shareOnOtherApp() {
+            let url = URL(string: "https://sites.google.com/view/muranakar")
+            if UIApplication.shared.canOpenURL(url!) {
+                UIApplication.shared.open(url!)
+            }
+        }
     private func configureAdBannar() {
         // GADBannerViewのプロパティを設定
         bannerView.adUnitID = "\(GoogleAdID.bannerID)"
