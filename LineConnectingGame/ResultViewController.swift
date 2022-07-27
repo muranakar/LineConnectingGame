@@ -50,7 +50,7 @@ class ResultViewController: UIViewController {
     }
 
     @IBAction func backButtonAction(_ sender: Any) {
-        // 広告を３回に、１回表示する処理
+        // 広告を2回に、１回表示する処理
         let adNum = GADRepository.processAfterAddGADNumPulsOneAndSaveGADNum()
         let reviewNum = ReviewRepository.processAfterAddReviewNumPulsOneAndSaveReviewNum()
 
@@ -60,7 +60,7 @@ class ResultViewController: UIViewController {
             }
         }
 
-        if adNum % 3 == 0 {
+        if adNum % 2 == 0 {
             if interstitial != nil {
                 interstitial?.present(fromRootViewController: self)
             } else {
@@ -83,10 +83,18 @@ class ResultViewController: UIViewController {
            shareOnOtherApp()
     }
 
+    @IBAction private func review(_ sender: Any) {
+        let urlString = URL(string: "https://apps.apple.com/app/id1630835450?action=write-review")
+        guard let writeReviewURL = urlString else {
+            fatalError("Expected a valid URL")
+        }
+        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
+    }
+
     func shareOnTwitter() {
         //シェアするテキストを作成
         let text = "【つなぐもじ】コインを合計\(coin)枚獲得！"
-        let hashTag = "#発達支援#高次脳機能#注意力#学習障害#脳トレ\nhttps://apps.apple.com/jp/app/%E3%81%A4%E3%81%AA%E3%81%90%E3%82%82%E3%81%98%E3%83%BC%E5%90%8C%E3%81%98%E6%96%87%E5%AD%97%E3%82%92%E3%81%A4%E3%81%AA%E3%81%92%E3%82%88%E3%81%86%E3%83%BC/id1630835450"
+        let hashTag = "#発達支援#高次脳機能#注意力#学習障害#脳トレ\nhttps://apps.apple.com/jp/app/id1630835450"
         let completedText = text + "\n" + hashTag
 
         //作成したテキストをエンコード
@@ -101,7 +109,7 @@ class ResultViewController: UIViewController {
 
     func shareOnLine() {
         let urlscheme: String = "https://line.me/R/share?text="
-        let message = "【つなぐもじ】コインを合計\(coin)枚獲得！\nhttps://apps.apple.com/jp/app/%E3%81%A4%E3%81%AA%E3%81%90%E3%82%82%E3%81%98%E3%83%BC%E5%90%8C%E3%81%98%E6%96%87%E5%AD%97%E3%82%92%E3%81%A4%E3%81%AA%E3%81%92%E3%82%88%E3%81%86%E3%83%BC/id1630835450"
+        let message = "【つなぐもじ】コインを合計\(coin)枚獲得！\nhttps://apps.apple.com/jp/app/id1630835450"
 
         // line:/msg/text/(メッセージ)
         let urlstring = urlscheme + "/" + message
